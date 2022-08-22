@@ -11,10 +11,11 @@ def sparkfunc(str):
 
 spark = SparkSession.builder.master("local[*]").appName("test").getOrCreate()
 sc = spark.sparkContext
-
-rdd=spark.read.format('csv').load("C:\\Users\\chinm\\OneDrive\\Documents\\record1.csv")
+rdd=spark.read.format('csv').option('header','true').option('inferSchema','true').load("C:\\Users\\chinm\\OneDrive\\Documents\\record1.csv")
+rdd.printSchema()
 uf=udf(sparkfunc)
 spark.udf.register('offer',uf)
+rdd.printSchema()
 rdd.createOrReplaceTempView('tab2')
 ndf=spark.sql("select *,offer(state) from tab2")
 ndf.show()

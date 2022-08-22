@@ -13,7 +13,7 @@ def sparkfunc(str):
 spark = SparkSession.builder.master("local[*]").appName("test").getOrCreate()
 sc = spark.sparkContext
 
-rdd=spark.read.format('csv').load("C:\\Users\\chinm\\OneDrive\\Documents\\record1.csv")
+rdd=spark.read.format('csv').option('header','true').option('inferSchema','true').load("C:\\Users\\chinm\\OneDrive\\Documents\\record1.csv")
 uf=udf(sparkfunc)
 ndf=rdd.withColumn("Discounts Today",uf(col('state')))
 ndf.show()
